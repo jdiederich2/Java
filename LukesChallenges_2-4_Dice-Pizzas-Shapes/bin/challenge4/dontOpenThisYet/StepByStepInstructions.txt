@@ -1,0 +1,426 @@
+STEP BY STEP INSTRUCTIONS - CHALLENGE 4
+
+Okay. If, for some reason, you opened this before reading the large comment at the top of the Main Class,
+go back and read that first. If you're here because that comment told you to come here, then keep reading!
+
+
+
+
+
+
+Here are your step by step instructions for this program. As I said, I'll start out heavy on the instructions
+and slowly get lighter as we get farther in. Okay? Cool. Let's begin.
+
+
+1) Open up the shapes2d package and take a look at the Shape2D abstract class.
+		a) You don't actually have to write any code in here. I just want you to read the comments I wrote in there
+		and familiarize yourself with the structure of the abstract class. 
+	
+	
+2) Now that you're familiar with Abstract Classes and Shape2D, open up the Rectangle Class. This is the only Class
+	that I wrote for you. Read the comments in it to ensure you know what the class is doing. 
+	You may need to refer back to it when you're writing the other shape classes.
+	
+	
+3) Open up the Triangle Class. You'll be filling this class out similar to the way the rectangle was filled out.
+
+		a) The first thing you'll need to do is change the parameters in the constructor.
+		There are four pieces of information you'll need to get the area and perimeter of
+		a triangle: baseLength, leftSideLength, rightSideLength, and height.
+		so the constructor's definition should be changed to look like this:
+			public Triangle(double base, double left, double right, double height) {
+			
+		b) Now that you've deleted the shapeType parameter, you'll need to put something
+		into the super(shapeType); call. Type in "Triangle" as the type: like so:
+			super("Triangle");
+			
+		c) Next, you'll need to store those passed in variables somewhere, so create 4 public 
+		global doubles called base, left, right, and height. Then store the passed-in variables
+		inside the global variables so that they can be accessed outside the constructor.
+		Remember to use "this." when referring to global variables when you have local
+		variables of the same name. All of that is written like so:
+		
+			public double base, left, right, height;
+			
+			public Triangle(double base, double left, double right, double height){
+				super("Triangle");
+				this.base = base;
+				this.left = left;
+				thsi.right = right;
+				this.height = height;
+			}
+			
+		d) The constructor for Triangle is done now. Next we'll move to the getArea() method.
+		The area of a triangle is calculated by A = (1/2)bh. This should be written like so:
+		
+			@Override
+			public double getArea() {
+				return 0.5 * base * height;
+			}
+			
+		e) Next we have to calculate the perimeter of the Triangle. The perimeter is found by
+		adding up the length of all of the sides of the triangle. This is written like so:
+		
+			@Override
+			public double getPerimeter() {
+				return left + right + base;
+			}
+			
+		f) Finally, you'll need to fill out the getShapeSpecificToStringParameters() method. This should be
+		filled with all of the information that's unique to a triangle. I.e. the base, left, right and height lengths.
+		It'll be filled out similar to the rectangle's method and it has a specific order that I would like it in:
+		Parameter first, then units, then label. Each parameter should be separated by "|".
+		So for the Triangle, it would look like this:
+			
+			@Override
+			public String getShapeSpecificToStringParameters() {
+				return base + " inches wide (base) | " + left + " inches tall (left) | " + right + " inches tall (right) | " + height + " inches tall (height)";
+			}
+			
+		g) The Triangle Class is now finished. This is the only one that I'm going to walk you though completely step by step. I'll be giving
+		you less information each time from now on.
+
+
+4) Next, open up the Oval class. This will be executed fairly similar to the triangle. If you need help with it, look back at the
+steps for the triangle.
+	
+		a) Start by changing the parameters for the Oval Constructor. The only information we need to determine the perimeter and area of an
+		oval is the short radius (radius1) and the long radius (radius2).
+		
+		b) The shapeType that gets passed to super(shapeType"); should be changed to "Oval"
+		
+		c) Next, store the passed in radiuses in global variables so that they can be used by the rest of the class. If you're questioning
+		how to do this, check out step 3c.
+		
+		d) You'll need to fill out the getArea() function next. The area of an oval can be found with the following equation:
+						
+						A = radius1 * radius2 * π             <--- In this program, just abbreviate π as 3.14159
+						
+		e) Next you'll need to fill out the getPerimeter method. This one is a bit tricker as to actually find the perimeter of an oval,
+		we'd need to do a large amount of math (Don't use this, I'm just showing you the equation: P = π(a + b)[1 + (3h/(10 + √(4 - 3((a - b)^2/(a + b)^2)))])
+		So instead, we'll do a rough approximation. Something that's close enough for government work. And to do that, we simply
+		treat the Oval as two different circles, find their perimeter, and average it. The formula to do all of that in one line is below:
+		Remember to abbreviate pi as 3.14159.
+		
+						P ≈ 2 π √((radius1^2 + radius2^2)/2)
+						
+				From now on I'm not going to give you the equations in code, but because of the complex nature of this one, I'll give it to you:
+				
+						P ≈  2.0 * 3.14159 * ( Math.sqrt( ( (radius1*radius1)+(radius2*radius2) ) / 2.0) );
+						
+		f) You're almost finished with Oval, all you need to do now is fill out the getShapeSpecificToStringParamters() method.
+		I'm not going to give you the string, but I'll give you what I want the output to look like. Lets say I have an Oval
+		with radius1 = 25.0 and radius2 = 36.0. I would want the output string to appear like so:
+		
+						25.0 inches tall | 36.0 inches wide
+	
+	
+5) The next shape, Square, will be done a bit differently. Since a square is just a Rectangle with equal side lengths, we can reuse a bunch of
+code! I already did this next part for you, but I'd like you to open up the Square Class and check out who its "parent" class is. Yep! We
+made its parent-class Rectangle! This means that we know a couple things are true: firstly, all Squares are Rectangles but not all
+Rectangles are squares. Secondly, all Squares are also Shape2D, and so are all rectangles! That's because Rectangle's parent is STILL
+Shape2D and so Square inherits the properties of both! We can use this to our advantage. 
+
+		a) First things first, we need to change the parameter of the square to only be a single variable. It would be redundant to 
+		ask for both width AND height when we know they're the same. So only ask for width. Now, do you notice the "super();" function
+		is taking different parameters than before? That's because Square's "super" AKA parent is rectangle. So the Super() method
+		takes the parameters of a Rectangle Constructor. Then, the rectangle's constructor calls the super() method in ITS constructor
+		which is Shape2D. That might be confusing to you, but just remember this: An object that extends another object is BOTH object types
+		at once. That means that, when they're created, BOTH objects need to be created. So whenever I create a Rectangle, it also creates a
+		Shape2D that merges into the rectangle. And whenever I create a Square, it creates a Shape2D, then it creates a Rectangle, merges the
+		Shape2D into the Rectangle, then merges the Rectangle into the Square. If that makes sense. If it doesn't let me know and I'll try
+		to do a better job explaining it. Another thing to remember about this is that parent constructors ALWAYS run BEFORE the child constructor.
+		This is because the "super()" method is required to be the FIRST line of a constructor. So when you try to create a Square, a chain
+		of events happens:
+		
+		
+				1) Square's constructor is called and it reads the first line (which is super();)
+				
+				2) Calling super calls constructor of Square's parent (which is Rectangle)
+				
+				3) Inside Rectangle's constructor, the program reads the first line (which is super();)
+				
+				4) Calling super calls the constructor of Rectangle's parent (which is Shape2D)
+				
+				5) Because Shape2D doesn't extend any classes, it doesn't have a super in its constructor and so
+				the constructor is executed fully. 
+				
+				6) Once the Shape2D constructor has finished, the code jumps back to Rectangle's constructor and
+				executes that method fully. 
+				
+				7) And finally, after it finished executing the Rectangle constructor, the code jumps to the
+				Square constructor and executes that fully.
+				
+		It's important to remember that order because it effects the order in which things happen. In particular, 
+		it's advantageous to us, at least in this instance.
+		
+		b) I rambled for a while in 5a, sorry about that. But I feel like it's important information that needs to be conveyed.
+		Anyway, now that you're only taking in the width and not the height, you'll need to change the super(); call to match this information.
+		Since super() calls the constructor of Rectangle, and a Square is just a rectangle with equal-length sides, you can fill out the 
+		super call like so:
+		
+				super(width, width);
+				
+		c) You DON'T actually have to store the passed in variable this time. Because you're sending the width to the Rectangle constructor,
+		it's being stored in the global variables of that Class. You still have access to it, even if you don't see it at the top.
+		(You'll be able to see this in action in step 5f) There IS something important that you need to do in Square's constructor, though.
+		Right now the shapeType is being set to "Rectangle" and we want it to be set to "Square". So, after the super call,
+		simply write this line:
+				
+				shapeType = "Square";
+				
+		We have access to shapeType because it's a global variable of Shape2D and because the Square class can be considered a Square, a Rectangle
+		or a Shape2D, it has access to the properties of ALL of them. Remember above when I said that the Square's constructor executes last?
+		This is why that's important. If it executed first, shapeType would be overwritten to "Rectangle" when the rectangle constructor was called,
+		but because it's executed last, we can change the value of shapeType without having to worry about something else changing it.
+		
+		d) Here's where inheriting Rectangle instead of just Shape2D comes in handy. The getArea() function is already written for us.
+		In Rectangle, getArea() is computed by taking length x width. This is still correct. When we passed "width" as both parameters
+		to Rectangle, we set it's length and width to both be the same value. Length x Width still results in an accurate area. So
+		we don't have to do anything!
+		
+		e) Same thing with perimeter. Rectangle's perimeter function still calculates an accurate for a square. We could technically make it
+		more efficient by just returning (width * 4) but it's not a huge deal in this case, so we'll leave it.
+		
+		f) Something we WILL want to change for Square, however, is the getShapeSpecificToStringParamters() method. Right now Rectangle's version
+		tells us both the width and the height of the shape, but because this is a Square, we don't need to know the height. So we're going
+		to Override the method! That means that the Rectangle's version of getShapeSpecificToStringParamters() will run in all cases
+		EXCEPT when that Rectangle is also a Square. Then the Square's method will take precedence. Override methods will always take the
+		most "specific" case. I.e. the "youngest child"'s version. To Override the method you'll need to type the following:
+		
+				@Override
+				public String getShapeSpecificToStringParameters() {
+					return null;
+				}
+				
+		If a little green arrow appears next to the "public String getShapeSpecificToStringParameters()" line on the far left side,
+		you know you've successfully Overridden the function. Now, change the return to say this:
+		
+				width + " inch side-lengths";
+				
+		Remember, you have access to width because it's a global variable of Rectangle and you're a child of it.
+		
+		
+6) The last of the Shape2D types we'll be making is Circle. As you've probably guessed, it will be written similar to the way we wrote
+Square because a Circle is just a special type of Oval.
+
+		a) First, change the parameters of the constructor so that it only accepts a single radius instead of two radiuses.
+		
+		b) You'll probably need to change the super() call to match the constructor of Oval. (Because it wasn't written when I made the class
+		it's probably asking for the wrong parameter). Go ahead and do what we did in square and add the radius that was passed in to both
+		the radius1 and radius2 spots.
+		
+		c) Just like in square, the radius will be stored in the parent class, Oval. So you don't need to store it. You do, however, need
+		to change the shape type to "Circle". If you don't remember how to do this, see step 5c.
+		
+		d) The getArea() method you wrote in Oval will work perfectly for for circles. (Since area is just A = π(r^2) and both radius1 and radius2
+		are equal to the radius of the circle, the equations become identical).
+		
+		e) The perimeter, however, is NOT the same. Because we have a perfect cirlce, we no longer need to estimate the perimeter (circumference) and
+		can instead calculate it much more accurately. You'll need to Override the getPerimeter function. Check out step 5f for a refresher on how
+		to do this. The green arrow/triangle will appear on the left side if you successfully override the function. Now, circumference of a circle
+		can be found using:
+		
+				P = 2πr
+		
+		Remember a couple things: Firstly, we're abbreviating π as 3.14159, and secondly, your radius is stored in the Oval class as both radius1 and
+		radius2. You can use either of them in this case. It's good practice to just use the first one as your go-to, though.
+		
+		f) Similar to Square, you'll have to Override the getShapeSpecificToStringParameters() function as well.
+		This time I want the output to simply look like this (lets say we have a circle with a radius of 4.5):
+				
+				4.5 inch radius
+				
+				
+7) Congratulations, you finished the first part of this Challenge by completing all of the 2D shapes! Now we move on to the 3D ones. This time
+You'll be doing a lot more of the work yourself! You can always refer back to steps 1-6 if you need help.
+
+8) Open up the shapes3d package and open the Shape3D Abstract Class. You'll be writing the structure for 3D shapes in the same way
+that Shape2D made the structure for 2D shapes. You may want to have the Shape2D Class open for reference, but you can close all of the other
+2D shapes for the moment.
+
+		a) First, take a look at the constructor I made for you. It's exactly the same as the Shape2D constructor. That's on purpose. The Class
+		is going to work almost identically to its 2D counterpart.
+		
+		b) Next, because you'll be using pi pretty often with 3D shapes, you're not going to want to type it out every single time. So right
+		above the line "public String shapeType;" I want you to write the following:
+		
+				public final double PI = 3.14159;
+				
+		Now, whenever you need to use pi in an equation, you just have to type PI. As long as the shape is a child or sub-child of Shape3D it'll have
+		access to the PI variable.
+		
+		c) You'll be writing your first abstract method definition next. I want you to create a method that will return the surfaceArea of a shape.
+		I'll give you the code for it, but you'll be on your own for the second abstract definition. Here's how you write the surfaceArea method
+		definition:
+				
+				public abstract double getSurfaceArea(); 
+				
+		Notice a few things: it returns a double, takes no parameters, and it has no method body (No curly braces, just a semicolon). This is exactly
+		like the getArea() method defined in the Shape2D Class.
+		
+		d) Next you'll be making a similar method definition, but for getting the volume of shapes. The method should be public, it should
+		return a double, and it should be called getVolume. Remember to make it abstract so that you don't have to define method.
+		
+		e) As you can see, I was nice and wrote the method definition for getShapeSpecificToStringParameters() for you. Be happy.
+		
+		f) You'll need to define this Class's toString() next. It'll be very similar to the Shape2D version. I'm just going to tell you what to
+		write because I want it to look exactly right. Here's what the method should look like:
+		
+			public String toString() {
+				return shapeType + "\nSurfaceArea = " + getSurfaceArea() + " square inches\nVolume = " + getVolume() + " inches cubed\n[" + getShapeSpecificToStringParameters() + "]";
+			}
+	
+
+9) Now that you've finished the abstract class, you're going to start seeing errors in all of the other 3D shapes. This is because they are all children
+of Shape3D and you defined some abstract methods that they haven't implemented yet. Go ahead and open up the Rectangular Prism Class.
+
+		a) One of the neat things about creating method definitions in an abstract class is that you can click to auto-fill them. Click the error on the left side
+		next to the Class name and click "add unimplemented methods". This should automatically fill your class with any abstract methods defined by its parent class that
+		it hasn't implemented yet. In your case, it should add the getSurfaceArea() and getVolume() methods.
+		
+		b) You probably know the drill now. This will work just like the 2D shapes. You need to change the parameters to fit what you'll need to
+		calculate the surface area and volume. In this case that's length, width, and height.
+		
+		c) Don't forget to store the length, width, and height as global variables and also change the shapeType that you're passing through
+		super() to "Rectangular Prism".
+		
+		d) Time to calculate the surfaceArea. I'm pretty much done writing code for you now so I'll just be giving you equations and stuff.
+		The equation to find the surface area of a rectangular prism is as follows:
+		
+				SA = 2((WL)+(HL)+(HW))
+				
+		e) Next is the volume. The equation for the volume of a Rectangular Prism is:
+		
+				V = LWH
+				
+		f) Finally, you have to fill out the getShapeSpecificToStringParameters() method. I would like the output to look like this (if we
+		had a Rectangular Prism with a width of 4, length of 5, and height of 6) :
+		
+				5.0 inches long | 4.0 inches wide | 6.0 inches tall
+				
+
+10) Next, open up Sphere and fill that out.
+
+		a) add unimplemented methods.
+
+		b) The only thing required to find the SA and V of a sphere is its radius. 
+		
+		c) Don't forget to store the radius and change the shapeType to "Sphere" though super()
+		
+		d) Surface Area of a sphere can be found with the following equation:
+		
+				SA = 4π(r^2)        <--- Remember to use your "PI" variable so you don't have to type it out.
+				
+		e) Volume of a sphere can be found with:
+		
+				V = (4/3)π(r^3)     <--- Remember "PI" variable
+				
+		f) The output should look like this for a radius of 36:
+		
+				36.0 inch radius
+				
+11) Next will be Tetrahedron AKA triangular pyramid.
+
+		a) add unimplemented methods.
+
+		b) The only thing required to find the SA and V of a Tetrahedron is the length of one side (call it sideLength).
+		
+		c) Don't forget to store the sideLength and change the shapeType to "Tetrahedron" though super()
+		
+		d) Surface Area of a Tetrahedron can be found with the following equation:
+		
+				SA = (√3)(a^2)			<--- the "a" variable is the length of one side.
+				
+		e) Volume of a Tetrahedron can be found with:
+		
+				V = (a^3)/(6*(√2))        <--- the "a" variable is the length of one side.
+				
+		f) The output should look like this for a sideLength of 12:
+		
+				12.0 inch sides
+				
+			
+12) We've done Rectangular Prism, Sphere, and Tetrahedron. Next is Cylinder (For this project we assume it's a "Right Cylinder" meaning that
+the top and bottom both have the same radius).
+
+		a) add unimplemented methods.
+
+		b) The things required to find the SA and V of a Cylinder are its radius and its height. 
+		
+		c) Don't forget to store radius and height and change the shapeType to "Cylinder" though super()
+		
+		d) Surface Area of a Cylinder can be found with the following equation:
+		
+				SA = 2πrh + 2π(r^2)        <--- Remember to use your "PI" variable so you don't have to type it out.
+				
+		e) Volume of a sphere can be found with:
+		
+				V = π(r^2)h     <--- Remember "PI" variable
+				
+		f) The output should look like this for a radius of 15 and a height of 10:
+		
+				15.0 inch radius | 10.0 inches tall
+				
+				
+13) Next is Pyramid AKA Square Pyramid. As you can see we're only doing the simple 3d shapes. 
+
+		a) add unimplemented methods.
+
+		b) The things required to find the SA and V of a Pyramid are the length of one of it's baseSides and its height.
+		
+		c) Don't forget to store baseLength and height and change the shapeType to "Pyramid" though super()
+		
+		d) Surface Area of a Pyramid can be found with the following equation:
+		
+				SA = (a^2) + 2a * √(((a^2)/4) + (h^2))			<--- the "a" variable is the baseLength
+				
+		e) Volume of a Pyramid can be found with:
+		
+				V =  (a^2) * (h/3)       					<--- the "a" variable is the baseLength
+				
+		f) The output should look like this for a baseLength of 8 and a height of 2.5:
+		
+				8.0 inch base-sides | 2.5 inches tall
+				
+14) Okay, we've done: Rectangular Prism, Sphere, Tetrahedron, Cylinder, and Pyramid. Next is Cone.
+
+		a) add unimplemented methods.
+
+		b) The things required to find the SA and V of a cone are its radius and its height. 
+		
+		c) Don't forget to store the radius and height and change the shapeType to "Cone" though super()
+		
+		d) Surface Area of a Cone can be found with the following equation:
+		
+				SA = πr * (r + √((h^2)+(r^2)))       <--- Remember to use your "PI" variable so you don't have to type it out.
+				
+		e) Volume of a Cone can be found with:
+		
+				V = π(r^2)(h/3)     <--- Remember "PI" variable
+				
+		f) The output should look like this for a radius of 10 and a height of 4:
+		
+				10.0 inch radius | 4.0 inches tall
+				
+15) Alright, final shape. Cube. I saved Cube for last because it's special. Cube is a special type of Rectangular Prism, so I have
+it as a child of that, instead of being a child of Shape3D.
+
+		a) Hopefully you know where this one is going. First change the input to be a single side length called "sideLength". Then pass it in to super()
+		as length, width, and height.
+		
+		b) remember, after calling super, you don't have to store the side length, but you DO need to set shapeType to "Cube". See
+		step 5c if you have questions.
+		
+		c) The volume and surface area functions found in Rectangular Prism will work perfectly fine for Cube so we don't need to override them.
+		
+		d) You will, however, need to override the getShapeSpecificToStringParameters() method so we can change its output. Check out
+		step 5f if you have questions on how to do this. I want the output to say this, if the squares side were all 45:
+		
+				45.0 inch side-lengths
+				
+				
+16) And that's all the code you have to write for this! All of the errors in the Main class should be gone! Give the program a test run to make
+sure that it doesn't crash and then send me a picture of the output! I really think this project will help you in the future. You can always
+refer back to it to help you understand parent-child relationships and whatnot. Plus, your next challenge will be on the same subject
+to test what you've learned here! :) Hopefully you liked this "challenge". I think it gave you some much-need experience.

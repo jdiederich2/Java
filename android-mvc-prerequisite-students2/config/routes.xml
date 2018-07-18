@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<routes>
+	<route path="/">
+		<controller>Home</controller>
+		<action>Index</action>
+	</route>
+</routes>
